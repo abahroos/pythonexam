@@ -1,0 +1,27 @@
+import pytest
+from kmer_analysis import generate_kmer_counts
+
+def test_kmer_typical():
+    seqs = ["ATGC"]
+    result = generate_kmer_counts(seqs, 2)
+    assert result == {'AT': {'G': 1}, 'TG': {'C': 1}}
+
+def test_kmer_long_k():
+    seqs = ["AT"]
+    result = generate_kmer_counts(seqs, 3)
+    assert result == {}
+
+def test_kmer_end_of_sequence():
+    seqs = ["ATGCG"]
+    result = generate_kmer_counts(seqs, 3)
+    assert result['TGC'] == {'G': 1}
+
+def test_kmer_case_insensitive():
+    seqs = ["atgc"]
+    result = generate_kmer_counts(seqs, 2)
+    assert result == {'AT': {'G': 1}, 'TG': {'C': 1}}
+
+def test_kmer_repeats():
+    seqs = ["AAAAA"]
+    result = generate_kmer_counts(seqs, 2)
+    assert result == {'AA': {'A': 3}}
